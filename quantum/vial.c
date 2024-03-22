@@ -83,6 +83,14 @@ void vial_handle_cmd(uint8_t *msg, uint8_t length) {
 
     /* msg[0] is 0xFE -- prefix vial magic */
     switch (msg[1]) {
+        case svial_get_layers_op: {
+            memset(msg,0, length);
+            memcpy(msg, &layer_state, sizeof(layer_state_t));
+            break;
+        }
+
+        case svial_set_layers_op: {
+        }
         /* Get keyboard ID and Vial protocol version */
         case vial_get_keyboard_id: {
             uint8_t keyboard_uid[] = VIAL_KEYBOARD_UID;

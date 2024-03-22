@@ -48,6 +48,7 @@ enum {
     vial_qmk_settings_set = 0x0B,
     vial_qmk_settings_reset = 0x0C,
     vial_dynamic_entry_op = 0x0D,  /* operate on tapdance, combos, etc */
+    svial_get_layers_op = 0xFE,
 };
 
 enum {

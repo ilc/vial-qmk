@@ -6,10 +6,12 @@ TAP_DANCE_ENABLE ?= yes
 ifeq ($(strip $(TAP_DANCE_ENABLE)), yes)
     OPT_DEFS += -DTAPPING_TERM_PER_KEY
 endif
+SERIAL_SUFFIX ?= ""
 COMBO_ENABLE ?= yes
 KEY_OVERRIDE_ENABLE ?= yes
 SRC += $(QUANTUM_DIR)/vial.c
-OPT_DEFS += -DVIAL_ENABLE -DNO_DEBUG -DSERIAL_NUMBER=\"vial:f64c2b3c\"
+# The 2 letters after the first s, is the svial protocol version.
+OPT_DEFS += -DVIAL_ENABLE -DNO_DEBUG -DSERIAL_NUMBER=\"s00vial:f64c2b3c$(SERIAL_SUFFIX)\"
 
 ifeq ($(strip $(VIAL_INSECURE)), yes)
     OPT_DEFS += -DVIAL_INSECURE
