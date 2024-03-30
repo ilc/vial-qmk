@@ -26,11 +26,32 @@ void bootmagic_lite(void) {
 void ps2_mouse_init_user() {
   //sensitivity command in fourth byte 00 = 0 multiplier, FF = 2.0 multiplier
   /*
-    PS2_MOUSE_SEND(0xE2);
-    PS2_MOUSE_SEND(0x81);
-    PS2_MOUSE_SEND(0x4A);
-    PS2_MOUSE_SEND(0x59);
+    PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+    PS2_MOUSE_SEND(0x81, "pts: 0xE2");
+    PS2_MOUSE_SEND(0x4A, "pts: 0x4A");
+    PS2_MOUSE_SEND(0xFF, "pts: 0xFF");
     */
+/*
+  This aligns with the "drift_time" parameter on linux.
+
+  https://wiki.archlinux.org/title/TrackPoint#Trackpoint_moves_on_its_own
+
+  Drift Counter 1 Reset Value [rstdft1]
+
+  E2 80 5F
+  E2 81 5F XX
+
+  This parameter sets the period of time to test for a ‘hands off’ condition before a drift
+  calibration occurs. This value is in units of 107 milliseconds per count. The default value
+  for rstdft1 is x"05" corresponding to a 533 millisecond period. This value is not affected
+  by a reset (x"FF") or set default (x"F6") command
+  */
+
+  PS2_MOUSE_SEND(0xE2, "pts: 0xE2");
+  PS2_MOUSE_SEND(0x81, "pts: 0x81");
+  PS2_MOUSE_SEND(0x5F, "pts: 0x5F");
+  PS2_MOUSE_SEND(0x19, "pts: 0x40");  // 25 as suggested by the article.
+
 
 //Z tap -- doesn't seem to work.  0x01 is on.
 
