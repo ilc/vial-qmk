@@ -19,9 +19,20 @@ jobs:
     container: ghcr.io/qmk/qmk_cli
 
     steps:
+<<<<<<< HEAD
     - name: Checkout code - Non PR
       uses: actions/checkout@v4
       if: ${{ needs.pr-check.outputs.number == 'null' }}
+=======
+<<<<<<< HEAD
+    - name: Checkout code - Non PR
+      uses: actions/checkout@v4
+      if: ${{ github.event_name != 'pull_request' }}
+=======
+    - name: Checkout code
+      uses: actions/checkout@v4
+>>>>>>> 5c1e4b3a46 (Fixes for build breaks, adding CI/CD for PRs.)
+>>>>>>> 5b8fdcb824 (Fixes for build breaks, adding CI/CD for PRs.)
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: ${{ github.ref }}
@@ -30,7 +41,11 @@ jobs:
 
     - name: Checkout code - PR
       uses: actions/checkout@v4
+<<<<<<< HEAD
       if: ${{ needs.pr-check.outputs.number != 'null' }}
+=======
+      if: ${{ github.event_name == 'pull_request' }}
+>>>>>>> 5b8fdcb824 (Fixes for build breaks, adding CI/CD for PRs.)
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         ref: ${{ github.event.pull_request.head.sha }}
@@ -38,7 +53,11 @@ jobs:
         submodules: 'recursive'
 
     - name: Get tag version
+<<<<<<< HEAD
       if: ${{ needs.pr-check.outputs.number == 'null' }}
+=======
+      if: ${{ github.event_name == 'pull_request' }}
+>>>>>>> 5b8fdcb824 (Fixes for build breaks, adding CI/CD for PRs.)
       id: get_version
       run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
 
