@@ -9,6 +9,24 @@
         "rows": 10,
         "cols": 6
     },
+    "customKeycodes": [
+      {"name": "LEFT DPI +",
+       "title": "Increase the DPI of the left pointing device.",
+       "shortName": "SV_LEFT_DPI_INC"
+      },
+      {"name": "LEFT DPI -",
+       "title": "Decrease the DPI of the left pointing device.",
+       "shortName": "SV_LEFT_DPI_DEC"
+      },
+      {"name": "RIGHT DPI +",
+       "title": "Increase the DPI of the right pointing device.",
+       "shortName": "SV_RIGHT_DPI_INC"
+      },
+      {"name": "RIGHT DPI -",
+       "title": "Decrease the DPI of the right pointing device.",
+       "shortName": "SV_RIGHT_DPI_DEC"
+      }
+    ],
     "layouts": {
       "keymap": [
         [{"x":3.5},"3,3",{"x":2.5},"2,3",{"x":9},"7,3",{"x":2.5},"8,3"],

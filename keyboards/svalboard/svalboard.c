@@ -1,5 +1,49 @@
 #include "svalboard.h"
 
+saved_values_t global_saved_values;
+
+const uint16_t dpi_choices[] = { 200, 400, 800, 1200, 1600, 2400 }; // If we need more, add them.
+#define DPI_CHOICES_LENGTH (sizeof(dpi_choices)/sizeof(dpi_choices[0]))
+
+void __attribute__((weak)) increase_left_dpi(void) {
+    if (global_saved_values.left_dpi_index + 1 < DPI_CHOICES_LENGTH) {
+        global_saved_values.left_dpi_index++;
+        set_left_dpi(global_saved_values.left_dpi_index);
+    }
+}
+
+void __attribute__((weak)) decrease_left_dpi(void) {
+    if (global_saved_values.left_dpi_index > 0) {
+        global_saved_values.left_dpi_index--;
+        set_left_dpi(global_saved_values.left_dpi_index);
+    }
+}
+
+void __attribute__((weak)) increase_right_dpi(void) {
+    if (global_saved_values.right_dpi_index + 1 < DPI_CHOICES_LENGTH) {
+        global_saved_values.right_dpi_index++;
+        set_right_dpi(global_saved_values.right_dpi_index);
+    }
+}
+
+void __attribute__((weak)) decrease_right_dpi(void) {
+    if (global_saved_values.right_dpi_index > 0) {
+        global_saved_values.right_dpi_index--;
+        set_right_dpi(global_saved_values.right_dpi_index);
+    }
+}
+#ifdef POINTING_DEVICE_ENABLED
+// TODO: Still need to add code to save values.
+void __attribute__((weak)) set_left_dpi(uint8_t index) {
+    uprintf("LDPI: %d %d\n", index, dpi_choices[index]);
+    pointing_device_set_cpi_on_side(false, dpi_choices[index]);
+}
+
+void __attribute__((weak)) set_right_dpi(uint8_t index) {
+    uprintf("RDPI: %d %d\n", index, dpi_choices[index]);
+    pointing_device_set_cpi_on_side(true, dpi_choices[index]);
+}
+#endif
 #ifndef SVALBOARD_REENABLE_BOOTMAGIC_LITE
 // This is to override `bootmagic_lite` feature (see docs/feature_bootmagic.md),
 // which can't be turned off in the usual way (via info.json) because setting

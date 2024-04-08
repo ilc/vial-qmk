@@ -36,8 +36,12 @@ void pointing_device_init_user(void) {
 #endif
 
 enum my_keycodes {
+  SV_LEFT_DPI_INC = QK_KB_0,
+  SV_LEFT_DPI_DEC,
+  SV_RIGHT_DPI_INC,
+  SV_RIGHT_DPI_DEC,
   KC_NORMAL_HOLD = SAFE_RANGE,
-  KC_FUNC_HOLD
+  KC_FUNC_HOLD,
 };
 
 enum layer {
@@ -229,6 +233,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       default:
 	mouse_mode(false);
       }
+    }
+    if (!record->event.pressed) {
+       switch (keycode) {
+           case SV_LEFT_DPI_INC:
+                increase_left_dpi();
+                break;
+            case SV_LEFT_DPI_DEC:
+                decrease_left_dpi();
+                break;
+            case SV_RIGHT_DPI_INC:
+                increase_right_dpi();
+                break;
+            case SV_RIGHT_DPI_DEC:
+                decrease_right_dpi();
+                break;
+            default:
+                break;
+        }
     }
 #endif
 
