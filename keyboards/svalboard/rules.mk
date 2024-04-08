@@ -11,9 +11,9 @@ SERIAL_DRIVER = vendor
 # this turns on trackpoint -- dupe in info.json?
 # PS2_MOUSE_ENABLE = yes
 # this turns on trackballs including pimoroni
-POINTING_DEVICE_ENABLE = no
+POINTING_DEVICE_ENABLE = yes
 # this selects trackball driver
-POINTING_DEVICE_DRIVER = pmw3360
+POINTING_DEVICE_DRIVER = custom
 # pimoroni_trackball
 # pmw3389
 

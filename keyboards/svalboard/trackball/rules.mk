@@ -6,4 +6,14 @@ POINTING_DEVICE_DRIVER = pmw3360
 # pmw3389
 MH_AUTO_BUTTONS = yes
 
-EXTRA_SRC += trackball.c
+ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pimoroni_trackball)
+	OPT_DEFS += -DPOINTING_DEVICE_IS_PIMORONI
+endif
+
+ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pmw3360)
+	OPT_DEFS += -DPOINTING_DEVICE_IS_PMW3360
+endif
+
+ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pmw3389)
+	OPT_DEFS += -DPOINTING_DEVICE_IS_PMW3389
+endif

@@ -64,7 +64,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // there's supposed to be support for multiple PMW33XX sensors, with different
         // CS pins.
         #define PMW33XX_CS_PIN GP25
-        #define PMW33XX_CS_PIN_RIGHT GP25
+        //#define PMW33XX_CS_PIN_RIGHT GP25
       #else
     //for Separate Pimoroni Connector
         #define SPI_DRIVER SPID0
@@ -79,17 +79,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         // CS pins.
         #define PMW33XX_CS_PIN GP17
     #endif
+  #ifdef FORTY_FOUR_MM_TB
+    #define POINTING_DEVICE_INVERT_X_RIGHT
+    #define POINTING_DEVICE_INVERT_X
+  #else
     #define POINTING_DEVICE_INVERT_Y_RIGHT
     #define POINTING_DEVICE_INVERT_Y
-    //#define POINTING_DEVICE_INVERT_X_RIGHT
     #define ROTATIONAL_TRANSFORM_ANGLE 90
   #endif
+  #endif
 #endif
-
-#if defined MH_AUTO_BUTTONS
-  #define MH_AUTO_BUTTONS_LAYER MBO
-  #define MH_AUTO_BUTTONS_TIMEOUT 5000
-//  #define PS2_MOUSE_SCROLL_BTN_MASK 0
-  #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
-#endif
-

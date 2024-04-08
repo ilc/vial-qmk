@@ -18,6 +18,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include QMK_KEYBOARD_H
 #include <stdbool.h>
 #include <stdint.h>
+#include "svalboard.h"
+
+#define MH_AUTO_BUTTONS_LAYER MBO
+#define MH_AUTO_BUTTONS_TIMEOUT 5000
+#define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 
 void keyboard_post_init_user(void) {
   // Customise these values if you need to debug the matrix
@@ -36,8 +41,14 @@ void pointing_device_init_user(void) {
 #endif
 
 enum my_keycodes {
+  SV_LEFT_DPI_INC = QK_KB_0,
+  SV_LEFT_DPI_DEC,
+  SV_RIGHT_DPI_INC,
+  SV_RIGHT_DPI_DEC,
+  SV_LEFT_SCROLL_TOGGLE,
+  SV_RIGHT_SCROLL_TOGGLE,
   KC_NORMAL_HOLD = SAFE_RANGE,
-  KC_FUNC_HOLD
+  KC_FUNC_HOLD,
 };
 
 enum layer {
@@ -178,6 +189,20 @@ report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, r
     if (reportMouse1.x == 0 && reportMouse1.y == 0 && reportMouse2.x == 0 && reportMouse2.y == 0)
         return pointing_device_combine_reports(reportMouse1, reportMouse2);
 
+    if (global_saved_values.left_scroll) {
+        reportMouse1.h = reportMouse1.x;
+        reportMouse1.v = -reportMouse1.y;
+        reportMouse1.x = 0;
+        reportMouse1.y = 0;
+    }
+
+    if (global_saved_values.right_scroll) {
+        reportMouse2.h = reportMouse2.x;
+        reportMouse2.v = -reportMouse2.y;
+        reportMouse2.x = 0;
+        reportMouse2.y = 0;
+    }
+
     if (mh_auto_buttons_timer) {
         mh_auto_buttons_timer = timer_read();
     } else {
@@ -229,6 +254,31 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       default:
 	mouse_mode(false);
       }
+    }
+    if (!record->event.pressed) {
+       switch (keycode) {
+           case SV_LEFT_DPI_INC:
+                increase_left_dpi();
+                break;
+           case SV_LEFT_DPI_DEC:
+                decrease_left_dpi();
+                break;
+           case SV_RIGHT_DPI_INC:
+                increase_right_dpi();
+                break;
+           case SV_RIGHT_DPI_DEC:
+                decrease_right_dpi();
+                break;
+           case SV_LEFT_SCROLL_TOGGLE:
+                global_saved_values.left_scroll = !global_saved_values.left_scroll;
+                write_eeprom_kb();
+                break;
+           case SV_RIGHT_SCROLL_TOGGLE:
+                global_saved_values.right_scroll = !global_saved_values.right_scroll;
+                write_eeprom_kb();
+           default:
+                break;
+        }
     }
 #endif
 

@@ -16,7 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #pragma once
-
+//#define FORTY_FOUR_MM_TB
 /* key matrix size */
 // Rows are doubled-up
 #define MATRIX_ROWS  10
@@ -25,7 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define FORCE_NKRO
 #define EE_HANDS
 //#define DEBUG_MATRIX_SCAN_RATE
-
+#define EECONFIG_KB_DATA_SIZE 4
 
 // wiring of each half
 //Layout for svalboard v0 (different from lalboard_v2)
@@ -55,6 +55,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define USB_MAX_POWER_CONSUMPTION 500
 #define USB_SUSPEND_WAKEUP_DELAY 500
 #define SELECT_SOFT_SERIAL_RATE {0}
+
+#define SPLIT_POINTING_ENABLE
+#define POINTING_DEVICE_COMBINED
+#define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
 // Avoid slave-slave deadlock due to missing USB_VBUS_PIN.
 //
