@@ -9,6 +9,34 @@
         "rows": 10,
         "cols": 6
     },
+    "customKeycodes": [
+      {"shortName": "Left\nDPI +",
+       "title": "Increase the DPI of the left pointing device.",
+       "name": "SV_LEFT_DPI_INC"
+      },
+      {"shortName": "Left\nDPI -",
+       "title": "Decrease the DPI of the left pointing device.",
+       "name": "SV_LEFT_DPI_DEC"
+      },
+      {"shortName": "Right\nDPI +",
+       "title": "Increase the DPI of the right pointing device.",
+       "name": "SV_RIGHT_DPI_INC"
+      },
+      {"shortName": "Right\nDPI -",
+       "title": "Decrease the DPI of the right pointing device.",
+       "name": "SV_RIGHT_DPI_DEC"
+      },
+      {
+        "shortName": "Scroll\nLeft\nToggle",
+        "title": "Toggle if the left pointer is scroll or pointer.",
+        "name": "SV_LEFT_SCROLL_TOGGLE"
+      },
+      {
+        "shortName": "Scroll\nRight\nToggle",
+        "title": "Toggle if the right pointer is scroll or pointer.",
+        "name": "SV_RIGHT_SCROLL_TOGGLE"
+      }
+    ],
     "layouts": {
       "keymap": [
         [{"x":3.5},"3,3",{"x":2.5},"2,3",{"x":9},"7,3",{"x":2.5},"8,3"],
