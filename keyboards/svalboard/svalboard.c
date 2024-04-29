@@ -1,3 +1,4 @@
+#include QMK_KEYBOARD_H
 #include "svalboard.h"
 #include "eeconfig.h"
 
@@ -12,7 +13,6 @@ void read_eeprom_kb(void) {
     eeconfig_read_kb_datablock(&global_saved_values);
     if (global_saved_values.version < 1) {
         global_saved_values.version = 1;
-        global_saved_values.left_scroll = true;
         global_saved_values.right_dpi_index=2;
         global_saved_values.left_dpi_index=2;
         modified = true;
@@ -57,7 +57,7 @@ void decrease_right_dpi(void) {
         write_eeprom_kb();
     }
 }
-// TODO: Still need to add code to save values.
+
 void set_left_dpi(uint8_t index) {
     uprintf("LDPI: %d %d\n", index, dpi_choices[index]);
     pointing_device_set_cpi_on_side(true, dpi_choices[index]);
@@ -199,3 +199,9 @@ Z Time Constant [zTc]
 }
 #endif
 
+void matrix_init_kb(void) {
+#if defined(POINTING_DEVICE_DRIVER_azoteq_iqs5xx)
+    setPinOutput(GP28);
+    writePinHigh(GP28);
+#endif
+}

@@ -19,6 +19,8 @@ POINTING_DEVICE_DRIVER = custom
 
 REPEAT_KEY_ENABLE = yes
 
+CONSOLE_ENABLE = yes
+
 ifeq ($(strip $(POINTING_DEVICE_DRIVER)), pimoroni_trackball)
 	OPT_DEFS += -DPOINTING_DEVICE_IS_PIMORONI
 endif

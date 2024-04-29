@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 void keyboard_post_init_user(void) {
   // Customise these values if you need to debug the matrix
   //debug_enable=true;
-  debug_matrix=true;
+  //debug_matrix=true;
   //debug_keyboard=true;
   //debug_mouse=true;
 }
