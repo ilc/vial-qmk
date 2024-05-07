@@ -19,6 +19,6 @@ jobs:
       side: ${{ matrix.side }}
     strategy:
       matrix:
-        keyboard: [ svalboard/trackpoint, svalboard, svalboard/trackball, svalboard/ballpoint, svalboard/pointball ]
+        keyboard: [ svalboard/trackpoint, svalboard, svalboard/trackball ]
         keymap: [ vial ]
         side: [ left, right ]

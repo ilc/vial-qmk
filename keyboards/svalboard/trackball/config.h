@@ -17,8 +17,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #pragma once
 
-#define MOUSE_EXTENDED_REPORT
-
 #undef PS2_MOUSE_ENABLE
 // in config.h:
 
@@ -34,9 +32,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #if defined(POINTING_DEVICE_ENABLE)
 
   // Pointing device stuff
-  #define SPLIT_POINTING_ENABLE
-  #define POINTING_DEVICE_COMBINED
-  #define POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE
 
   #if defined(POINTING_DEVICE_IS_PIMORONI)
 
