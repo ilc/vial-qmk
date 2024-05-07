@@ -17,13 +17,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "../keymap_support.c"
 
-#define NORMAL L0
-#define NORMAL_HOLD L1
-#define FUNC L2
-#define FUNC_HOLD L3
-#define NAS L4
+enum layer {
+    NORMAL,
+    NORMAL_HOLD,
+    FUNC,
+    FUNC_HOLD,
+    NAS,
+    MBO = MH_AUTO_BUTTONS_LAYER,
+};
 
-const uint16_t PROGMEM keymaps[NUM_LAYERS][MATRIX_ROWS][MATRIX_COLS] = {
+const uint16_t PROGMEM keymaps[DYNAMIC_KEYMAP_LAYER_COUNT][MATRIX_ROWS][MATRIX_COLS] = {
     [NORMAL] = LAYOUT(
         /*Center           North           East            South           West*/
 

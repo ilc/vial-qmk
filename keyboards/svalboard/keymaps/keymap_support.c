@@ -2,12 +2,12 @@
 Copyright 2023 Morgan Venable @_claussen
 
 This program is free software: you can redistribute it and/or modify
-                                                                     it under the terms of the GNU General Public License as published by
-                                                                         the Free Software Foundation, either version 2 of the License, or
-                                         (at your option) any later version.
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
 
-                                         This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdint.h>
 #include "svalboard.h"
 
-#define MH_AUTO_BUTTONS_LAYER MBO
+#define MH_AUTO_BUTTONS_LAYER (DYNAMIC_KEYMAP_LAYER_COUNT - 1)
 #define MH_AUTO_BUTTONS_TIMEOUT 5000
 #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 
@@ -35,7 +35,7 @@ void keyboard_post_init_user(void) {
 // in keymap.c:
 #ifdef POINTING_DEVICE_AUTO_MOUSE_ENABLE
 void pointing_device_init_user(void) {
-    set_auto_mouse_layer(15); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
+    set_auto_mouse_layer(MH_AUTO_BUTTONS_LAYER); // only required if AUTO_MOUSE_DEFAULT_LAYER is not set to index of <mouse_layer>
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 #endif
@@ -50,26 +50,6 @@ enum my_keycodes {
     SV_RECALIBRATE_POINTER,
     KC_NORMAL_HOLD = SAFE_RANGE,
     KC_FUNC_HOLD,
-};
-
-enum layer {
-    L0,
-    L1,
-    L2,
-    L3,
-    L4,
-    L5,
-    L6,
-    L7,
-    L8,
-    L9,
-    L10,
-    L11,
-    L12,
-    L13,
-    L14,
-    MBO,
-    NUM_LAYERS
 };
 
 #if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE)  || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
@@ -143,7 +123,7 @@ report_mouse_t pointing_device_task_combined_user(report_mouse_t reportMouse1, r
     } else {
         mouse_mode(true);
 #if defined CONSOLE_ENABLE
-        print("mh_auto_buttons: on\n");
+        print("task - combined mh_auto_buttons: on\n");
 #endif
     }
     return pointing_device_combine_reports(reportMouse1, reportMouse2);
@@ -158,7 +138,7 @@ report_mouse_t pointing_device_task_user(report_mouse_t reportMouse) {
     } else {
         mouse_mode(true);
 #if defined CONSOLE_ENABLE
-        print("mh_auto_buttons: on\n");
+        print("user - mh_auto_buttons: on\n");
 #endif
     }
     return reportMouse;
@@ -196,6 +176,9 @@ bool process_record_kb(uint16_t keycode, keyrecord_t *record) {
             case SV_RECALIBRATE_POINTER:
                 break;
             default:
+#ifdef CONSOLE_ENABLE
+                uprintf("process_record: off\n");
+#endif
                 mouse_mode(false);
         }
     }
@@ -240,7 +223,7 @@ void ps2_mouse_moved_user(report_mouse_t *mouse_report) {
         if (!tp_buttons) {
             mouse_mode(true);
 #if defined CONSOLE_ENABLE
-            print("mh_auto_buttons: on\n");
+            print("ps2 / mh_auto_buttons: on\n");
 #endif
         }
     }
@@ -255,7 +238,7 @@ void matrix_scan_kb(void) {
         if (!tp_buttons) {
             mouse_mode(false);
 #if defined CONSOLE_ENABLE
-            print("mh_auto_buttons: off\n");
+            print("matrix - mh_auto_buttons: off\n");
 #endif
         }
     }
