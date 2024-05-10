@@ -3,13 +3,64 @@
 #include "pointing_device_internal.h"
 #include "ps2_mouse.h"
 #include "ps2.h"
+#include "svalboard.h"
 
 extern const pointing_device_driver_t real_device_driver;
+
+#define NOISE_COUNT 3
+#define NOISE_RADIUS (1)
+#define NOISE_IDLE_COUNT 10
+
+static int16_t noise;
+static int16_t noise_x;
+static int16_t noise_y;
+static int16_t noise_idle_count;
+static bool stopped = true;
+
+report_mouse_t denoise_reports(report_mouse_t mouse_report) {
+    if (mouse_report.x == 0 && mouse_report.y == 0) {
+        noise = 0;
+        noise_x = 0;
+        noise_y = 0;
+        stopped = true;
+        if (noise_idle_count < NOISE_IDLE_COUNT) {
+            noise_idle_count++;
+        }
+        return mouse_report;
+    }
+
+    if (mouse_report.x > NOISE_RADIUS || mouse_report.x < -NOISE_RADIUS || mouse_report.y > NOISE_RADIUS || mouse_report.y < -NOISE_RADIUS || noise_idle_count < NOISE_IDLE_COUNT) {
+        noise = 0;
+        mouse_report.x += noise_x;
+        mouse_report.y += noise_y;
+        noise_x = 0;
+        noise_y = 0;
+        noise_idle_count = 0;
+        stopped = false;
+    } else {
+        if (stopped) {
+            noise++;
+            if (noise > NOISE_COUNT) {
+                noise_x = 0;
+                noise_y = 0;
+                noise = 0;
+                recalibrate_pointer();
+            } else {
+                noise_x += mouse_report.x;
+                noise_y += mouse_report.y;
+            }
+        }
+    }
+    // This should never happen.
+    return mouse_report;
+}
 
 report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
     int16_t swap;
 
     mouse_report = real_device_driver.get_report(mouse_report);
+
+    mouse_report = denoise_reports(mouse_report);
 
     swap = mouse_report.x;
     mouse_report.x = mouse_report.y;
