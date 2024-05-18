@@ -19,8 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include <stdbool.h>
 #include <stdint.h>
 #include "svalboard.h"
+#include "keymap_support.h"
 
-#define MH_AUTO_BUTTONS_LAYER (DYNAMIC_KEYMAP_LAYER_COUNT - 1)
 #define MH_AUTO_BUTTONS_TIMEOUT 5000
 #define PS2_MOUSE_SCROLL_BTN_MASK (1<<PS2_MOUSE_BTN_MIDDLE) // this mask disables the key for non-PS2 purposes
 
@@ -39,19 +39,6 @@ void pointing_device_init_user(void) {
     set_auto_mouse_enable(true);         // always required before the auto mouse feature will work
 }
 #endif
-
-enum my_keycodes {
-    SV_LEFT_DPI_INC = QK_KB_0,
-    SV_LEFT_DPI_DEC,
-    SV_RIGHT_DPI_INC,
-    SV_RIGHT_DPI_DEC,
-    SV_LEFT_SCROLL_TOGGLE,
-    SV_RIGHT_SCROLL_TOGGLE,
-    SV_RECALIBRATE_POINTER,
-    KC_NORMAL_HOLD = SAFE_RANGE,
-    KC_FUNC_HOLD,
-    SV_SAFE_RANGE, // Keycodes over this are safe on Svalboard.
-};
 
 #if (defined MH_AUTO_BUTTONS && defined PS2_MOUSE_ENABLE && defined MOUSEKEY_ENABLE)  || defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
 
