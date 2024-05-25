@@ -56,7 +56,7 @@ void mouse_mode(bool);
 
 #if defined(POINTING_DEVICE_AUTO_MOUSE_MH_ENABLE)
 
-#define SCROLL_DIVISOR 20
+#define SCROLL_DIVISOR 40
 
 static int _ds_l_x = 0;
 static int _ds_l_y = 0;
