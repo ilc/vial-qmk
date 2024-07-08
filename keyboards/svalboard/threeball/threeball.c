@@ -31,24 +31,28 @@ int _dx;
 int _dy;
 int _dv;
 
-report_mouse_t handle_normal(pmw33xx_report_t report0) {
+#define SQRT2_2 0.707107f
+
+report_mouse_t handle_normal(pmw33xx_report_t report0, pmw33xx_report_t report1) {
     report_mouse_t mouse_report;
 
-    _dx += report0.delta_x;
-    _dy += report0.delta_y;
+    _dx += (report0.delta_y - report1.delta_y);
+    _dy += (report0.delta_y + report1.delta_y);
 
     mouse_report.x = _dx / divisor;
     _dx -= mouse_report.x * divisor;
     mouse_report.y = _dy / divisor;
     _dy -= mouse_report.y * divisor;
 
+    //    mouse_report.x = mouse_report.x;
+    
     mouse_report.h = 0;
     mouse_report.v = 0;
 
     return mouse_report;
 }
 
-report_mouse_t handle_scroll_v(pmw33xx_report_t report1) {
+report_mouse_t handle_scroll_v(pmw33xx_report_t report0, pmw33xx_report_t report1) {
     report_mouse_t mouse_report;
 
     _dv -= report1.delta_x;
@@ -90,13 +94,13 @@ int16_t report_count = 0;
 //    int distance;
 bool waiting_to_idle = false;
 void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
-    int z = 0;
-    int z_t = 0;
-    int dx;
-    int dy;
+//    int z = 0;
+//    int z_t = 0;
+//    int dx;
+//    int dy;
 //    int x;
 //    int y;
-
+#if 0
     // Handle delay before going into idle.
     if (report0.delta_x == 0 && report0.delta_y == 0 &&
         report1.delta_x == 0 && report0.delta_y == 0) {
@@ -115,6 +119,7 @@ void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
         waiting_to_idle = true;
         return;
     }
+#endif
 //    x = report1.delta_x;
 //    y = report1.delta_y;
     // we decided, we have not idled out.  Same mode.
@@ -129,8 +134,11 @@ void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
 //        make_a_choice();
 //
 //         figure out next step.
-//    }
+//   }
 
+
+    current_state = NORMAL;
+#if 0
     dx = report1.delta_x - report0.delta_x;
     dy = report1.delta_y - report0.delta_y;
 
@@ -141,28 +149,28 @@ void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
     waiting_to_idle = false;
 
     current_state = IDLE;
-
+#endif
 }
 
 report_mouse_t pointing_device_driver_get_report(report_mouse_t mouse_report) {
     pmw33xx_report_t report0 = pmw33xx_read_burst(0);  // Back Sensor
     pmw33xx_report_t report1 = pmw33xx_read_burst(1);  // Bottom Sensor
 
-    report0 = fix_report(report0);
-    report1 = fix_report(report1);
+    //    report0 = fix_report(report0);
+    //    report1 = fix_report(report1);
 
     determine_state(report0, report1);
 //    uprintf("%3d %3d %3d %3d %4d %d\n", report0.delta_x, report0.delta_y, report1.delta_x, report1.delta_y,
-    uprintf("%3d %3d %4d %d\n", report1.delta_x, report1.delta_y,
-    (int)((report0.delta_x * report0.delta_x) + (report0.delta_y * report0.delta_y)) - (int)((report1.delta_x * report1.delta_x) + (report1.delta_y * report1.delta_y)),
-            current_state);
+//    uprintf("%3d %3d %4d %d\n", report1.delta_x, report1.delta_y,
+//    (int)((report0.delta_x * report0.delta_x) + (report0.delta_y * report0.delta_y)) - (int)((report1.delta_x * report1.delta_x) + (report1.delta_y * report1.delta_y)),
+//            current_state);
 
     switch (current_state) {
         case NORMAL:
-            mouse_report = handle_normal(report0);
+	    mouse_report = handle_normal(report0, report1);
             break;
         case SCROLL_V:
-            mouse_report = handle_scroll_v(report1);
+	    mouse_report = handle_scroll_v(report0, report1);
             break;
         case IDLE:
             mouse_report.x = 0;
