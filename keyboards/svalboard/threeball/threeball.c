@@ -3,7 +3,7 @@
 #include "pointing_device_internal.h"
 #include <math.h>
 
-#define REAL_CPI  6000
+#define REAL_CPI  12000
 // Technically the number below should be 80, but 100 felt better.
 #define SCROLL_DIVISOR_MULT 100
 
@@ -55,7 +55,7 @@ report_mouse_t handle_normal(pmw33xx_report_t report0, pmw33xx_report_t report1)
 report_mouse_t handle_scroll_v(pmw33xx_report_t report0, pmw33xx_report_t report1) {
     report_mouse_t mouse_report;
 
-    _dv -= report1.delta_x;
+    _dv -= report0.delta_x + report1.delta_x;
     mouse_report.v = _dv / scroll_divisor;
     _dv -= mouse_report.v * scroll_divisor;
     mouse_report.h = 0;
@@ -120,7 +120,23 @@ void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
         return;
     }
 #endif
-//    x = report1.delta_x;
+
+
+#define RATTIO 2
+    
+    int sum_normal;
+    int sum_spin;
+
+    sum_normal = (abs(report0.delta_y) + abs(report1.delta_y)) * RATTIO;
+    sum_spin = abs(report0.delta_x) + abs(report1.delta_x);
+
+    if (sum_normal == 0 && sum_spin == 0) {
+        current_state = IDLE;
+    } else {
+        current_state = sum_normal >= sum_spin ? NORMAL : SCROLL_V;
+    }
+
+    //    x = report1.delta_x;
 //    y = report1.delta_y;
     // we decided, we have not idled out.  Same mode.
 //    if (report_count == -1) {
@@ -137,7 +153,7 @@ void determine_state(pmw33xx_report_t report0, pmw33xx_report_t report1) {
 //   }
 
 
-    current_state = NORMAL;
+
 #if 0
     dx = report1.delta_x - report0.delta_x;
     dy = report1.delta_y - report0.delta_y;
