@@ -55,7 +55,7 @@ report_mouse_t handle_normal(pmw33xx_report_t report0, pmw33xx_report_t report1)
 report_mouse_t handle_scroll_v(pmw33xx_report_t report0, pmw33xx_report_t report1) {
     report_mouse_t mouse_report;
 
-    _dv -= report0.delta_x + report1.delta_x;
+    _dv += report0.delta_x + report1.delta_x;
     mouse_report.v = _dv / scroll_divisor;
     _dv -= mouse_report.v * scroll_divisor;
     mouse_report.h = 0;
