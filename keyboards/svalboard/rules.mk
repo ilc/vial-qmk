@@ -19,6 +19,8 @@ POINTING_DEVICE_DRIVER = custom
 
 REPEAT_KEY_ENABLE = yes
 
+DEFERRED_EXEC_ENABLE = yes
+
 # this turns on Manna-Harbour's automousekeys:
 MH_AUTO_BUTTONS = yes
 
