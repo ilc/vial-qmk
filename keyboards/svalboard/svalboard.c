@@ -4,7 +4,7 @@
 #include "split_common/transactions.h"
 
 saved_values_t global_saved_values;
-const int16_t mh_timer_choices[4] = { 300, 500, 800, -1 }; // -1 is infinite.
+const int16_t mh_timer_choices[6] = { 200, 300, 400, 500, 800, -1 }; // -1 is infinite.
 
 uint8_t sval_active_layer = 0;
 #ifdef VIAL_ENABLE
@@ -74,7 +74,7 @@ const char *yes_or_no(int flag) {
     }
 }
 
-const uint16_t dpi_choices[] = { 200, 400, 800, 1200, 1600, 2400 }; // If we need more, add them.
+const uint16_t dpi_choices[] = { 200, 400, 600, 800, 1200, 1600, 2400 }; // If we need more, add them.
 #define DPI_CHOICES_LENGTH (sizeof(dpi_choices)/sizeof(dpi_choices[0]))
 
 void output_keyboard_info(void) {
