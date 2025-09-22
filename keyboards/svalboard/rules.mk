@@ -15,6 +15,9 @@ SRC += axis_scale.c matrix.c $(EXTRA_SRC)
 
 SERIAL_DRIVER = vendor
 
+# removing USB start upcheck may allow this default NKRO-enabled device to interact with BIOS on boot for dual-boot machines. see more: https://github.com/qmk/qmk_firmware/issues/19593#issuecomment-1387476045
+NO_USB_STARTUP_CHECK = yes
+
 POINTING_DEVICE_ENABLE = yes
 POINTING_DEVICE_DRIVER = custom
 
