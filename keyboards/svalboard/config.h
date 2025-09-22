@@ -101,3 +101,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define PERMISSIVE_HOLD
 #define ACHORDION_STREAK
+
+// Restore ability to interact with BIOS during boot process
+// https://github.com/qmk/qmk_firmware/issues/18511#issuecomment-1264604610
+// https://github.com/qmk/qmk_firmware/issues/8990#issuecomment-851055637
+#undef SPLIT_USB_DETECT
