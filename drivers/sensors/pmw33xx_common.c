@@ -14,6 +14,7 @@
 #include "wait.h"
 #include "spi_master.h"
 #include "progmem.h"
+#include "print.h"
 
 extern const uint8_t pmw33xx_firmware_signature[2] PROGMEM;
 
@@ -251,7 +252,19 @@ uint16_t pmw33xx_get_cpi_wrapper(void) {
 report_mouse_t pmw33xx_get_report(report_mouse_t mouse_report) {
     pmw33xx_report_t report    = pmw33xx_read_burst(0);
     static bool      in_motion = false;
+    static bool      timer_on  = false;
+    static uint16_t  timer_val = 0;
 
+    if (timer_on) {
+        if (timer_elapsed(timer_val) > 100) {
+	    timer_val = timer_read();
+            printf("%d\n", report.squal);
+        } 
+    } else {
+        timer_val = timer_read();
+        timer_on  = true;
+    }
+    
     if (report.motion.b.is_lifted) {
         return mouse_report;
     }

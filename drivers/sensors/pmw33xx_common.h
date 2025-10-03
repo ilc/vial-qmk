@@ -37,10 +37,11 @@ typedef struct __attribute__((packed)) {
     } motion;
     uint8_t observation;
     int16_t delta_x; // displacement on x directions. Unit: Count. (CPI * Count = Inch value)
-    int16_t delta_y; // displacement on y directions.
+    int16_t delta_y;
+    uint8_t squal;// displacement on y directions.
 } pmw33xx_report_t;
 
-STATIC_ASSERT(sizeof(pmw33xx_report_t) == 6, "pmw33xx_report_t must be 6 bytes in size");
+STATIC_ASSERT(sizeof(pmw33xx_report_t) == 7, "pmw33xx_report_t must be 7 bytes in size");
 STATIC_ASSERT(sizeof((pmw33xx_report_t){0}.motion) == 1, "pmw33xx_report_t.motion must be 1 byte in size");
 
 #if !defined(PMW33XX_CLOCK_SPEED)
