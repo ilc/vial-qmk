@@ -2,7 +2,12 @@
 #include "eeconfig.h"
 #include "version.h"
 #include "split_common/transactions.h"
+#include "usb_main.h"
+#include "suspend.h"
 #include QMK_KEYBOARD_H
+
+// For non-blocking USB suspend wakeup (NO_USB_STARTUP_CHECK disables QMK's blocking version)
+#define USB_GETSTATUS_REMOTE_WAKEUP_ENABLED (2U)
 
 saved_values_t global_saved_values;
 const int16_t mh_timer_choices[6] = { 200, 300, 400, 500, 800, -1 }; // -1 is infinite.
@@ -218,6 +223,14 @@ bool is_connected = false;
 
 void housekeeping_task_kb(void) {
     if (is_keyboard_master()) {
+        // Non-blocking USB suspend wakeup. NO_USB_STARTUP_CHECK disables QMK's
+        // blocking version (needed for BIOS/KVM compatibility), so we handle it here.
+        if (USB_DRIVER.state == USB_SUSPENDED &&
+            (USB_DRIVER.status & USB_GETSTATUS_REMOTE_WAKEUP_ENABLED) &&
+            suspend_wakeup_condition()) {
+            usbWakeupHost(&USB_DRIVER);
+        }
+
         static uint32_t last_ping = 0;
         if (timer_elapsed(last_ping) > 500) {
             presence_rpc_t rpcout = {global_saved_values.turbo_scan};
