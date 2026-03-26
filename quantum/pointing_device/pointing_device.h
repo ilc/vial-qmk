@@ -108,6 +108,7 @@ typedef int16_t hv_clamp_range_t;
 
 #define CONSTRAIN_HID(amt) ((amt) < INT8_MIN ? INT8_MIN : ((amt) > INT8_MAX ? INT8_MAX : (amt)))
 #define CONSTRAIN_HID_XY(amt) ((amt) < MOUSE_REPORT_XY_MIN ? MOUSE_REPORT_XY_MIN : ((amt) > MOUSE_REPORT_XY_MAX ? MOUSE_REPORT_XY_MAX : (amt)))
+#define CONSTRAIN_HID_HV(amt) ((amt) < MOUSE_REPORT_HV_MIN ? MOUSE_REPORT_HV_MIN : ((amt) > MOUSE_REPORT_HV_MAX ? MOUSE_REPORT_HV_MAX : (amt)))
 
 void           pointing_device_init(void);
 bool           pointing_device_task(void);
